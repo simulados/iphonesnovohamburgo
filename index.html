@@ -51,10 +51,10 @@
                     <div id="resultado" style="display: none;">
                         <table class="table is-fullwidth mb-4">
                             <thead>
-                                <!-- <tr>
-                                    <th>Valor com Desconto Dinheiro, TED ou PIX</th>
+                                <tr>
+                                    <th>Valor no Dinheiro ou PIX</th>
                                     <td width="110" id="valorDinheiro" class='has-text-right'></td>
-                                </tr> -->
+                                </tr>
                                 <tr>
                                     <th>Valor no Cartão de Débito</th>
                                     <td width="110" id="debitoAvista" class='has-text-right'></td>
@@ -107,24 +107,24 @@
     <script src="plugins/aos/aos.js"></script>
     <script>
          var taxas = {
-                    1 : 1.035,
-                    2 : 1.055,
-                    3 : 1.060,
-                    4 : 1.068,
+                    1 : 1.040,
+                    2 : 1.060,
+                    3 : 1.065,
+                    4 : 1.070,
                     5 : 1.075,
                     6 : 1.080,
                     7 : 1.085,
-                    8 : 1.090,
-                    9 : 1.095,
-                    10 : 1.100,
-                    11 : 1.100,
-                    12 : 1.100,
-                    13 : 1.120,
-                    14 : 1.120,
-                    15 : 1.120,
-                    16 : 1.120,
-                    17 : 1.120,
-                    18 : 1.130
+                    8 : 1.095,
+                    9 : 1.100,
+                    10 : 1.110,
+                    11 : 1.120,
+                    12 : 1.120,
+                    13 : 1.150,
+                    14 : 1.150,
+                    15 : 1.150,
+                    16 : 1.150,
+                    17 : 1.150,
+                    18 : 1.150
                 }
         function addRow(content) {
             $("#body").append("<tr>"+content+"</tr>");
@@ -140,11 +140,11 @@
             valor =  valor > 0 ? (valor/100) : 0;
             entrada = entrada > 0 ? (entrada/100) : 0;
 
-            $("#debitoAvista").html("R$ " + formatBr(valor));
+            $("#debitoAvista").html("R$ " + formatBr(valor + ((valor/100) * 2.5)));
             
-            // var desconto = valor > 200 ? (valor - 50) : valor;
+            var desconto = valor > 200 ? (valor) : valor;
 
-            // $("#valorDinheiro").html("R$ " + formatBr(desconto));
+            $("#valorDinheiro").html("R$ " + formatBr(desconto));
 
             valor = valor - entrada;
 
