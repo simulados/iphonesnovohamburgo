@@ -1,0 +1,6 @@
+@font-face {
+  font-family: 'Selima';
+  src: url('/css/fonts/Selima.otf'); /* IE9 Compat Modes */
+  src: url('/css/fonts/Selima.otf?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url('/css/fonts/Selima.ttf')  format('truetype'), /* Safari, Android, iOS */
+}

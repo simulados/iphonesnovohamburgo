@@ -1,12 +1,193 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="pt-br">
+
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Primeiro commit</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Google fonts -->
+    <link href="plugins/googlefont/fonts.css" rel="stylesheet">
+
+    <!-- Bulma CSS -->
+    <link rel="stylesheet" href="plugins/bulma/bulma.css">
+
+    <link rel="stylesheet" href="plugins/aos/aos.css">
+
+    <link rel="stylesheet" href="css/style.css">
+    <title>Simulador - Iphones Novo Hamburgo</title>
 </head>
+
 <body>
-  <h1>Primeiro commit</h1>
+    <section class="container">
+        <h1 class="is-size-2 has-text-centered my-5">Iphones<br>Novo Hamburgo</h1>
+        <div class="columns">
+            <div class="mx-auto card" data-aos="fade-left">
+                <div class="card-content">
+                    <p class="title is-4">Simule uma compra</p>
+                    
+                    <div class="columns">
+                        <div class="column">
+                            <label for="valorItem" class="label">Valor do Item</label>
+                            <div class="input-group">
+                                <p class="control has-icons-left">
+                                    <input type="text" id="valorItem" class="input money" aria-label="valor do item">
+                                    <span class="icon is-small is-left">R$</span>
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <div class="column">
+                            <label for="valorEntrada" class="label">Valor de Entrada</label>
+                            <div class="input-group">
+                                <p class="control has-icons-left">
+                                    <input type="text" id="valorEntrada" class="input money" aria-label="valor da entrada">
+                                    <span class="icon is-small is-left">R$</span>
+                                </p>
+                            </div>
+                        </div>                        
+                    </div>
+
+                    <div id="resultado" style="display: none;">
+                        <table class="table is-fullwidth mb-4">
+                            <thead>
+                                <!-- <tr>
+                                    <th>Valor com Desconto Dinheiro, TED ou PIX</th>
+                                    <td width="110" id="valorDinheiro" class='has-text-right'></td>
+                                </tr> -->
+                                <tr>
+                                    <th>Valor no Cartão de Débito</th>
+                                    <td width="110" id="debitoAvista" class='has-text-right'></td>
+                                </tr>
+                                <tr>
+                                    <th>Valor a ser Parcelado no Cartão de Crédito</th>
+                                    <td width="110" id="valorAParcelar" class='has-text-right'></td>
+                                </tr>
+                            </thead>
+                        </table>
+                   
+                        <table class="table is-narrow is-hoverable is-fullwidth text-center">
+                            <thead>
+                                <tr>
+                                    <th>Vezes</th>
+                                    <th>Valor da parcela</th>
+                                    <th class='has-text-right'>Valor total</th>
+                                </tr>
+                            </thead>
+                            <tbody id="body">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="container is-max-desktop my-5 p-5">
+        <div class="columns">
+            <div class="column mx-auto my-4">
+                <div class="columns">
+                    <a href="https://api.whatsapp.com/message/FUY3OKZVQLCRK1?autoload=1&app_absent=0" target="_blank" class="column has-text-centered">
+                        <i class="is-size-3 bi bi-whatsapp"></i>
+                        <br/>
+                        <span>Contato via Whatsapp (Opção 1)</span>
+                    </a>
+                    <a href="https://api.whatsapp.com/message/FUY3OKZVQLCRK1?autoload=1&app_absent=0" target="_blank" class="column has-text-centered">
+                        <i class="is-size-3 bi bi-whatsapp"></i>
+                        <br/>
+                        <span>Contato via Whatsapp (Opção 2)</span>
+                    </a>
+                    <a href="https://www.instagram.com/iphones_novohamburgo/" target="_blank" class="column has-text-centered">
+                        <i class="is-size-3 bi bi-instagram"></i>
+                        <br/>
+                        <span>Instagram</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="plugins/jquery/jquery.js"></script>
+    <script src="plugins/popper/popper.js"></script>
+    <script src="plugins/jquery-mask/jquery.mask.min.js"></script>
+    <script src="plugins/aos/aos.js"></script>
+    <script>
+         var taxas = {
+                    1 : 1.035,
+                    2 : 1.055,
+                    3 : 1.060,
+                    4 : 1.068,
+                    5 : 1.075,
+                    6 : 1.080,
+                    7 : 1.085,
+                    8 : 1.090,
+                    9 : 1.095,
+                    10 : 1.100,
+                    11 : 1.100,
+                    12 : 1.100,
+                    13 : 1.120,
+                    14 : 1.120,
+                    15 : 1.120,
+                    16 : 1.120,
+                    17 : 1.120,
+                    18 : 1.130
+                }
+        function addRow(content) {
+            $("#body").append("<tr>"+content+"</tr>");
+        }
+
+        function formatBr(value){
+            return value.toLocaleString('pt-br', {minimumFractionDigits: 2, maximumFractionDigits:2})
+        }
+
+        function calcule(valor, entrada){
+            $("#body").html("");
+            $("#resultado").show();
+            valor =  valor > 0 ? (valor/100) : 0;
+            entrada = entrada > 0 ? (entrada/100) : 0;
+
+            $("#debitoAvista").html("R$ " + formatBr(valor));
+            
+            // var desconto = valor > 200 ? (valor - 50) : valor;
+
+            // $("#valorDinheiro").html("R$ " + formatBr(desconto));
+
+            valor = valor - entrada;
+
+            $("#valorAParcelar").html("R$ " + formatBr(valor));
+
+            for (const vezes in taxas) {
+                var taxa = taxas[vezes];
+                var total = (valor * taxa)
+                var divisao = (total / vezes);
+                addRow("<td>" + vezes + "</td><td>R$ " + formatBr(divisao) + "</td><td class='has-text-right'>R$ " + formatBr(total) + "</td>");
+            }
+        }
+
+        $(function(){
+            var valorItem = $("#valorItem");
+            var valorEntrada = $("#valorEntrada");
+
+            valorItem.on('keyup', function(){
+                calcule(valorItem.cleanVal(), valorEntrada.cleanVal());
+            });
+            valorEntrada.on('keyup', function(){
+                calcule(valorItem.cleanVal(), valorEntrada.cleanVal());
+            });
+
+            $('.money').mask('000.000.000.000.000,00', {reverse: true});
+       
+            AOS.init();
+
+            // var WhatsAppUrl = 'https://web.whatsapp.com/send';
+            // if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+            //     WhatsAppUrl = 'https://api.whatsapp.com/send'; 
+            // }
+
+            // $('.btn-whatapp').attr('href',WhatsAppUrl+'?phone=+5551999802666');
+        });
+    </script>
 </body>
+
 </html>
